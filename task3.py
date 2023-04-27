@@ -1,6 +1,44 @@
 from typing import List, Tuple
 import random
 
+grid1 = [
+		[1, 0, 4, 2],
+		[4, 2, 1, 3],
+		[2, 1, 3, 4],
+		[3, 4, 2, 1]]
+
+grid2 = [
+		[1, 0, 4, 2],
+		[4, 2, 1, 3],
+		[2, 1, 0, 4],
+		[3, 4, 2, 1]]
+
+grid3 = [
+		[1, 0, 4, 2],
+		[4, 2, 1, 0],
+		[2, 1, 0, 4],
+		[0, 4, 2, 1]]
+
+grid4 = [
+		[1, 0, 4, 2],
+		[0, 2, 1, 0],
+		[2, 1, 0, 4],
+		[0, 4, 2, 1]]
+
+grid5 = [
+		[1, 0, 0, 2],
+		[0, 0, 1, 0],
+		[0, 1, 0, 4],
+		[0, 0, 0, 1]]
+
+grid6 = [
+		[0, 0, 6, 0, 0, 3],
+		[5, 0, 0, 0, 0, 0],
+		[0, 1, 3, 4, 0, 0],
+		[0, 0, 0, 0, 0, 6],
+		[0, 0, 1, 0, 0, 0],
+		[0, 5, 0, 0, 6, 4]]
+
 def solve_sudoku(board: List[List[int]]) -> bool:
     n = len(board)
     m = int(n ** 0.5)
@@ -74,3 +112,10 @@ def solve_sudoku(board: List[List[int]]) -> bool:
                 update_possible(i, j, board[i][j])
 
     return wavefront_propagation()
+
+if solve_sudoku(grid1):
+    print("Solve successfully：")
+    for row in grid1:
+        print(row)
+else:
+    print("No solution")
