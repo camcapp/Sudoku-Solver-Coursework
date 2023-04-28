@@ -1,6 +1,7 @@
 import random
 import copy
 import time
+import sys  # for flags
 
 # Grids 1-4 are 2x2
 grid1 = [
@@ -216,7 +217,7 @@ def print_command(prev_grid, grid):
 
 
 def main(args: list):
-    explain_flag = 'explain' in args
+    explain_flag = '-explain' in args
     points = 0
 
     print("Running test script for coursework 1")
@@ -243,5 +244,4 @@ def main(args: list):
 
 
 if __name__ == "__main__":
-    args = ['explain']
-    main(args)
+    # main(sys.argv)
