@@ -39,6 +39,71 @@ grid6 = [
 		[0, 0, 1, 0, 0, 0],
 		[0, 5, 0, 0, 6, 4]]
 
+grid7 = [
+        [9, 0, 6, 0, 0, 1, 0, 4, 0],
+        [7, 0, 1, 2, 9, 0, 0, 6, 0],
+        [4, 0, 2, 8, 0, 6, 3, 0, 0],
+        [0, 0, 0, 0, 2, 0, 9, 8, 0],
+        [6, 0, 0, 0, 0, 0, 0, 0, 2],
+        [0, 9, 4, 0, 8, 0, 0, 0, 0],
+        [0, 0, 3, 7, 0, 8, 4, 0, 9],
+        [0, 4, 0, 0, 1, 3, 7, 0, 6],
+        [0, 6, 0, 9, 0, 0, 1, 0, 8]]
+
+grid8 = [
+        [0, 0, 0, 2, 6, 0, 7, 0, 1],
+        [6, 8, 0, 0, 7, 0, 0, 9, 0],
+        [1, 9, 0, 0, 0, 4, 5, 0, 0],
+        [8, 2, 0, 1, 0, 0, 0, 4, 0],
+        [0, 0, 4, 6, 0, 2, 9, 0, 0],
+        [0, 5, 0, 0, 0, 3, 0, 2, 8],
+        [0, 0, 9, 3, 0, 0, 0, 7, 4],
+        [0, 4, 0, 0, 5, 0, 0, 3, 6],
+        [7, 0, 3, 0, 1, 8, 0, 0, 0]]
+
+grid9 = [
+        [0, 3, 0, 4, 0, 0],
+        [0, 0, 5, 6, 0, 3],
+        [0, 0, 0, 1, 0, 0],
+        [0, 1, 0, 3, 0, 5],
+        [0, 6, 4, 0, 3, 1],
+        [0, 0, 1, 0, 4, 6]]
+
+grid10 = [
+         [0, 2, 0, 0, 0, 0, 0, 1, 0],
+         [0, 0, 6, 0, 4, 0, 0, 0, 0],
+         [5, 8, 0, 0, 9, 0, 0, 0, 3],
+         [0, 0, 0, 0, 0, 3, 0, 0, 4],
+         [4, 1, 0, 0, 8, 0, 6, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 9, 5],
+         [2, 0, 0, 0, 1, 0, 0, 8, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 3, 1, 0, 0, 8, 0, 5, 7]]
+
+grid11 = [
+         [0, 0, 0, 6, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 5, 0, 1],
+         [3, 6, 9, 0, 8, 0, 4, 0, 0],
+         [0, 0, 0, 0, 0, 6, 8, 0, 0],
+         [0, 0, 0, 1, 3, 0, 0, 0, 9],
+         [4, 0, 5, 0, 0, 9, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 3, 0, 0],
+         [0, 0, 6, 0, 0, 7, 0, 0, 0],
+         [1, 0, 0, 3, 4, 0, 0, 0, 0]]
+
+grid12 = [
+         [8, 0, 9, 0, 2, 0, 3, 0, 0],
+         [0, 3, 7, 0, 6, 0, 5, 0, 0],
+         [0, 0, 0, 4, 0, 9, 7, 0, 0],
+         [0, 0, 2, 9, 0, 1, 0, 6, 0],
+         [1, 0, 0, 3, 0, 6, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 1, 0, 3],
+         [7, 0, 0, 0, 0, 0, 0, 0, 8],
+         [5, 0, 0, 0, 0, 0, 0, 1, 4],
+         [0, 0, 0, 2, 8, 4, 6, 0, 5]]
+
+
+
 # Main function: Solve Sudoku
 def solve_sudoku(board: List[List[int]]) -> bool:
     n = len(board)  # Size of the Sudoku
@@ -126,9 +191,24 @@ def solve_sudoku(board: List[List[int]]) -> bool:
 
     return wavefront_propagation()
 
-if solve_sudoku(grid1): # This function can enter the variable name of the sudoku
-    print("Solve successfully：")
-    for row in grid1:
-        print(row)
-else:
-    print("No solution")
+def sudoku_test(sudoku):
+    if solve_sudoku(sudoku):  # This function accepts the variable name of the sudoku
+        print("Solve successfully:")
+        for row in sudoku:
+            print(row)
+    else:
+        print("No solution")
+    return sudoku
+
+print(sudoku_test(grid1))
+print(sudoku_test(grid2))
+print(sudoku_test(grid3))
+print(sudoku_test(grid4))
+print(sudoku_test(grid5))
+print(sudoku_test(grid6))
+print(sudoku_test(grid7))
+print(sudoku_test(grid8))
+print(sudoku_test(grid9))
+print(sudoku_test(grid10))
+print(sudoku_test(grid11))
+print(sudoku_test(grid12))
