@@ -14,19 +14,19 @@ Important Notes
 - The program can only solve 2x2 and 3x3 Sudoku puzzles. Any other puzzle sizes will result in an error.
 - The program will only output the first solution it finds. If a puzzle has multiple solutions, the program will not find all of them.
 
-# Task 2 - by Alper
+Task 2 - by Alper, Cameron
 -> Using Flags -explain and -file INPUT OUTPUT
     + Flags can be provided in any order
     + explain flag
         Sample command
-            python coursework3_task1.py -explain
+            python alper_flags.py -explain
 
     + file flag
         - INPUT and OUTPUT file are processed under the same folder as project
         - INPUT file must exist
         - If no OUTPUT file exists, a file is created and filled.
             Sample command
-                python coursework3_task1.py -file easy1.txt easy1-out.txt
+                python alper_flags.py -file easy1.txt easy1-out.txt
 
         - INPUT file format
             a. Each row in the input file represents a row in the game
@@ -34,8 +34,8 @@ Important Notes
             c. Empty location are represented by zero
 
     + More sample commands
-        python coursework3_task1.py -explain -file abc.txt cba.txt
-        python coursework3_task1.py -file abc.txt cba.txt -explain
+        python alper_flags.py -explain -file abc.txt cba.txt
+        python alper_flags.py -file abc.txt cba.txt -explain
         
 
 #task 3 by Zili
