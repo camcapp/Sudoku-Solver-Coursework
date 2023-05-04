@@ -291,9 +291,9 @@ def main(args: list):
 
 if __name__ == "__main__":
     #args = ['-explain']
-    args = ['-file', 'abc.txt', 'cba.txt']
-    # args = ['-explain', '-file', 'abc.txt', 'cba.txt']
-    #args = sys.argv
+    #args = ['-file', 'easy1.txt', 'easy1-out.txt']
+    # args = ['-explain', '-file', 'easy1.txt', 'easy1-out.txt']
+    args = sys.argv
     main(args)
     print("\n\n====================================")
     print(content)
