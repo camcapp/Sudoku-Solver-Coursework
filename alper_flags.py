@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import random
 import copy
 import time
@@ -80,6 +78,7 @@ def find_empty(grid):
     '''
 	This function returns the index (i, j) to the first zero element in a sudoku grid
 	If no such element is found, it returns None
+
 	args: grid
 	return: A tuple (i,j) where i and j are both integers, or None
 	'''
@@ -106,6 +105,7 @@ def recursive_solve(grid, n_rows, n_cols):
     '''
 	This function uses recursion to exhaustively search all possible solutions to a grid
 	until the solution is found
+
 	args: grid, n_rows, n_cols
 	return: A solved grid (as a nested list), or None
 	'''
@@ -129,6 +129,7 @@ def recursive_solve(grid, n_rows, n_cols):
 def check_solution(grid, n_rows, n_cols):
     '''
 	This function is used to check whether a sudoku board has been correctly solved
+
 	args: grid - representation of a suduko board as a nested list.
 	returns: True (correct solution) or False (incorrect solution)
 	'''
@@ -145,6 +146,7 @@ def check_solution(grid, n_rows, n_cols):
 def random_solve(grid, n_rows, n_cols, max_tries=50000):
     '''
 	This function uses random trial and error to solve a Sudoku grid
+
 	args: grid, n_rows, n_cols, max_tries
 	return: A solved grid (as a nested list), or the original grid if no solution is found
 	'''
@@ -160,6 +162,7 @@ def random_solve(grid, n_rows, n_cols, max_tries=50000):
 def fill_board_randomly(grid, n_rows, n_cols):
     '''
 	This function will fill an unsolved Sudoku grid with random numbers
+
 	args: grid, n_rows, n_cols
 	return: A grid with all empty values filled in
 	'''
@@ -196,23 +199,20 @@ DO NOT CHANGE CODE BELOW THIS LINE
 
 
 def get_diff(prev_grid, grid):
-    dif_found = False
-    value = location = None
+    moves = []
     for row in range(len(prev_grid)):
         for col in range(len(prev_grid[0])):
             if prev_grid[row][col] != grid[row][col]:
-                dif_found = True
                 value = grid[row][col]
                 location = (row, col)
-                break
-        if dif_found:
-            break
-    return [value, location]
+                moves.append([value, location])
+    return moves
 
 
 def print_command(prev_grid, grid):
-    [value, location] = get_diff(prev_grid, grid)
-    print_and_save_string("\t- Put " + str(value) + " in location " + str(location))
+    moves = get_diff(prev_grid, grid)
+    for value, location in moves:
+        print_and_save_string("\n\t\t- Put " + str(value) + " in location " + str(location))
 
 
 def get_file_args(args):
@@ -267,15 +267,15 @@ def main(args: list):
         prev_grid = copy.deepcopy(grid)
         solution = solve(grid, n_rows, n_cols)
         elapsed_time = time.time() - start_time
-        print_and_save_string("\t- Solved in: {:f} seconds".format(elapsed_time))
+        print_and_save_string("\n\t- Solved in: {:f} seconds".format(elapsed_time))
         if explain_flag:
             print_command(prev_grid, grid)
-        print_and_save_string("\t- " + str(solution))
+        print_and_save_string("\n\t- " + str(solution))
         if check_solution(solution, n_rows, n_cols):
-            print_and_save_string("\t- grid {} correct".format(i + 1))
+            print_and_save_string("\n\t- grid {} correct".format(i + 1))
             points = points + 10
         else:
-            print_and_save_string("\t- grid {} incorrect".format(i + 1))
+            print_and_save_string("\n\t- grid {} incorrect".format(i + 1))
         print_and_save_string('\n')
     print("====================================")
     print_and_save_string("Test script complete, Total points: {}".format(points))
@@ -289,7 +289,7 @@ def main(args: list):
 if __name__ == "__main__":
     #args = ['-explain']
     #args = ['-file', 'easy1.txt', 'easy1-out.txt']
-    # args = ['-explain', '-file', 'easy1.txt', 'easy1-out.txt']
+    #args = ['-explain', '-file', 'easy1.txt', 'easy1-out.txt']
     args = sys.argv
     main(args)
     print("\n\n====================================")
