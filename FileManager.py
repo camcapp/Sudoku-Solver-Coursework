@@ -67,7 +67,11 @@ class FileManager:
             row = get_row(line)
             grid.append(row)
 
-        i = j = int(sqrt(len(grid[0])))
+        if len(grid[0]) == 9:
+            i = j = 3
+        else:
+            i = 3
+            j = 2
         return [(grid, i, j)]
 
     def close(self):
