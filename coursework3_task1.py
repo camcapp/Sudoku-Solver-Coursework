@@ -4,6 +4,8 @@ import time
 import sys  # for flags
 
 # Grids 1-4 are 2x2
+from FileManager import FileManager, write_into
+
 grid1 = [
     [1, 0, 4, 2],
     [4, 2, 1, 3],
@@ -213,35 +215,79 @@ def get_diff(prev_grid, grid):
 
 def print_command(prev_grid, grid):
     [value, location] = get_diff(prev_grid, grid)
-    print("Put", value, "in location", location)
+    print_and_save_string("\t- Put " + str(value) + " in location " + str(location))
+
+
+def get_file_args(args):
+    file_flag = file_to_read = file_to_write = None
+    if '-file' in args:
+        file_flag = True
+        file_to_read = args[args.index('-file') + 1]
+        file_to_write = args[args.index('-file') + 2]
+
+    return [file_flag, file_to_read, file_to_write]
+
+
+def get_file_manager(file_flag, file_to_read):
+    file_manager = None
+    if file_flag:
+        file_manager = FileManager(file_to_read)
+
+    return file_manager
+
+
+def get_grids(file_manager):
+    if file_manager is not None:
+        new_grids = file_manager.read_grid()
+        return new_grids
+
+    return grids
+
+
+def print_and_save_string(text: str):
+    global string_to_write
+    string_to_write += text
+    print(text)
+
+
+string_to_write = ""
 
 
 def main(args: list):
     explain_flag = '-explain' in args
+
+    [file_flag, file_to_read, file_to_write] = get_file_args(args)
+    file_manager = get_file_manager(file_flag, file_to_read)
+    grids_to_solve = get_grids(file_manager)
     points = 0
 
     print("Running test script for coursework 1")
     print("====================================")
 
-    for (i, (grid, n_rows, n_cols)) in enumerate(grids):
-        print("Solving grid: %d" % (i + 1))
+    for (i, (grid, n_rows, n_cols)) in enumerate(grids_to_solve):
+        print_and_save_string("-> Solving grid: {}".format(i + 1))
         start_time = time.time()
         prev_grid = copy.deepcopy(grid)
         solution = solve(grid, n_rows, n_cols)
         elapsed_time = time.time() - start_time
-        print("Solved in: %f seconds" % elapsed_time)
+        print_and_save_string("\t- Solved in: {:f} seconds".format(elapsed_time))
         if explain_flag:
             print_command(prev_grid, grid)
-        print(solution)
+        print_and_save_string("\t- " + str(solution))
         if check_solution(solution, n_rows, n_cols):
-            print("grid %d correct" % (i + 1))
+            print_and_save_string("\t- grid {} correct".format(i + 1))
             points = points + 10
         else:
-            print("grid %d incorrect" % (i + 1))
-
+            print_and_save_string("\t- grid {} incorrect".format(i + 1))
+        print_and_save_string('\n')
     print("====================================")
-    print("Test script complete, Total points: %d" % points)
+    print_and_save_string("Test script complete, Total points: {}".format(points))
+    file_manager.close()
 
 
 if __name__ == "__main__":
-    # main(sys.argv)
+    args = ['-file', 'abc.txt', 'cba.txt', '-explain']
+    # args = sys.argv
+    main(args)
+    print("\n\n====================================")
+    print(string_to_write)
