@@ -245,12 +245,12 @@ def get_grids(file_manager):
 
 
 def print_and_save_string(text: str):
-    global string_to_write
-    string_to_write += text
+    global content
+    content += text
     print(text)
 
 
-string_to_write = ""
+content = ""
 
 
 def main(args: list):
@@ -282,12 +282,18 @@ def main(args: list):
         print_and_save_string('\n')
     print("====================================")
     print_and_save_string("Test script complete, Total points: {}".format(points))
-    file_manager.close()
+    if file_flag:
+        write_into(file_to_write, content)
+
+    if file_manager is not None:
+        file_manager.close()
 
 
 if __name__ == "__main__":
-    args = ['-file', 'abc.txt', 'cba.txt', '-explain']
-    # args = sys.argv
+    #args = ['-explain']
+    args = ['-file', 'abc.txt', 'cba.txt']
+    # args = ['-explain', '-file', 'abc.txt', 'cba.txt']
+    #args = sys.argv
     main(args)
     print("\n\n====================================")
-    print(string_to_write)
+    print(content)
