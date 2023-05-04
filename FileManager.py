@@ -1,3 +1,6 @@
+from math import sqrt
+
+
 def write_into(file_to_write: str, content: str):
     file_to_write = open(file_to_write, 'w')
     file_to_write.write(content)
@@ -46,12 +49,9 @@ grid6 = [
 # grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2)]
 
 def get_row(line: str):
-    line = line.removesuffix(']\n').removeprefix('[')
+    line = line.removesuffix('\n')
     numbers = line.split(',')
-    row = []
-    for e in numbers:
-        row.append(int(e))
-
+    row = [int(e) for e in numbers]
     return row
 
 
@@ -63,12 +63,11 @@ class FileManager:
     def read_grid(self):
         grid = []
         lines = self.file.readlines()
-        j = int(lines.pop().removesuffix('\n'))
-        i = int(lines.pop().removesuffix('\n'))
         for line in lines:
             row = get_row(line)
             grid.append(row)
 
+        i = j = int(sqrt(len(grid[0])))
         return [(grid, i, j)]
 
     def close(self):
