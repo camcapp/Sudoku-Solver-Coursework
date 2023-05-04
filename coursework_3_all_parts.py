@@ -1,0 +1,486 @@
+#!/usr/bin/env python3
+
+import random
+import copy
+import time
+from matplotlib import pyplot as plt
+import numpy as np
+import sys
+from typing import List, Tuple
+
+
+
+#Grids 1-4 are 2x2
+grid1 = [
+		[1, 0, 4, 2],
+		[4, 2, 1, 3],
+		[2, 1, 3, 4],
+		[3, 4, 2, 1]]
+
+grid2 = [
+		[1, 0, 4, 2],
+		[4, 2, 1, 3],
+		[2, 1, 0, 4],
+		[3, 4, 2, 1]]
+
+grid3 = [
+		[1, 0, 4, 2],
+		[4, 2, 1, 0],
+		[2, 1, 0, 4],
+		[0, 4, 2, 1]]
+
+grid4 = [
+		[1, 0, 4, 2],
+		[0, 2, 1, 0],
+		[2, 1, 0, 4],
+		[0, 4, 2, 1]]
+
+grid5 = [
+		[1, 0, 0, 2],
+		[0, 0, 1, 0],
+		[0, 1, 0, 4],
+		[0, 0, 0, 1]]
+
+grid6 = [
+		[0, 0, 6, 0, 0, 3],
+		[5, 0, 0, 0, 0, 0],
+		[0, 1, 3, 4, 0, 0],
+		[0, 0, 0, 0, 0, 6],
+		[0, 0, 1, 0, 0, 0],
+		[0, 5, 0, 0, 6, 4]]
+
+grid7 = [[9, 0, 6, 0, 0, 1, 0, 4, 0], 
+        [7, 0, 1, 2, 9, 0, 0, 6, 0], 
+        [4, 0, 2, 8, 0, 6, 3, 0, 0], 
+        [0, 0, 0, 0, 2, 0, 9, 8, 0],
+        [6, 0, 0, 0, 0, 0, 0, 0, 2],
+        [0, 9, 4, 0, 8, 0, 0, 0, 0],
+        [0, 0, 3, 7, 0, 8, 4, 0, 9],
+        [0, 4, 0, 0, 1, 3, 7, 0, 6],
+        [0, 6, 0, 9, 0, 0, 1, 0, 8]]
+
+grid8 = [[0, 0, 0, 2, 6, 0, 7, 0, 1],
+        [6, 8, 0, 0, 7, 0, 0, 9, 0],
+        [1, 9, 0, 0, 0, 4, 5, 0, 0],
+        [8, 2, 0, 1, 0, 0, 0, 4, 0],
+        [0, 0, 4, 6, 0, 2, 9, 0, 0],
+        [0, 5, 0, 0, 0, 3, 0, 2, 8],
+        [0, 0, 9, 3, 0, 0, 0, 7, 4],
+        [0, 4, 0, 0, 5, 0, 0, 3, 6],
+        [7, 0, 3, 0, 1, 8, 0, 0, 0]]
+
+grid9 = [[0, 3, 0, 4, 0, 0],
+        [0, 0, 5, 6, 0, 3],
+        [0, 0, 0, 1, 0, 0],
+        [0, 1, 0, 3, 0, 5],
+        [0, 6, 4, 0, 3, 1],
+        [0, 0, 1, 0, 4, 6]]
+
+
+grid10 = [[0, 2, 0, 0, 0, 0, 0, 1, 0],
+        [0, 0, 6, 0, 4, 0, 0, 0, 0],
+        [5, 8, 0, 0, 9, 0, 0, 0, 3],
+        [0, 0, 0, 0, 0, 3, 0, 0, 4],
+        [4, 1, 0, 0, 8, 0, 6, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 9, 5],
+        [2, 0, 0, 0, 1, 0, 0, 8, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 3, 1, 0, 0, 8, 0, 5, 7]]
+
+grid11 = [[0, 0, 0, 6, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 5, 0, 1],
+        [3, 6, 9, 0, 8, 0, 4, 0, 0],
+        [0, 0, 0, 0, 0, 6, 8, 0, 0],
+        [0, 0, 0, 1, 3, 0, 0, 0, 9],
+        [4, 0, 5, 0, 0, 9, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 3, 0, 0],
+        [0, 0, 6, 0, 0, 7, 0, 0, 0],
+        [1, 0, 0, 3, 4, 0, 0, 0, 0]]
+
+grid12 = [[8, 0, 9, 0, 2, 0, 3, 0, 0],
+        [0, 3, 7, 0, 6, 0, 5, 0, 0],
+        [0, 0, 0, 4, 0, 9, 7, 0, 0],
+        [0, 0, 2, 9, 0, 1, 0, 6, 0],
+        [1, 0, 0, 3, 0, 6, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 3],
+        [7, 0, 0, 0, 0, 0, 0, 0, 8],
+        [5, 0, 0, 0, 0, 0, 0, 1, 4],
+        [0, 0, 0, 2, 8, 4, 6, 0, 5]]
+
+#To add more grids, define them as above, then add to the grid list, alongside the dimensions.
+
+
+grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2), (grid6, 2, 3), (grid7, 3, 3), (grid8, 3, 3),
+        (grid9, 2, 3), (grid10, 3, 3), (grid11, 3, 3), (grid12, 3, 3)]
+
+
+def check_section(section, n):
+    if len(set(section)) == len(section) and sum(section) == sum([i for i in range(1, n+1)]):
+        return True
+    return False
+
+def get_squares(grid, n_rows, n_cols):
+    squares = []
+    for i in range(n_cols):
+        rows = (i*n_rows, (i+1)*n_rows)
+        for j in range(n_rows):
+            cols = (j*n_cols, (j+1)*n_cols)
+            square = []
+            for k in range(rows[0], rows[1]):
+                line = grid[k][cols[0]:cols[1]]
+                square += line
+            squares.append(square)
+    return squares
+
+
+
+def find_empty(grid):
+    '''
+	This function returns the index (i, j) to the first zero element in a sudoku grid
+	If no such element is found, it returns None
+
+	args: grid
+	return: A tuple (i,j) where i and j are both integers, or None
+	'''
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == 0:
+                return (i, j)
+    return None
+
+def get_potential_values(grid, row, col, n_rows, n_cols):
+    n = n_rows*n_cols
+    used_nums = set(grid[row]) | set(grid[i][col] for i in range(n))
+    square_col = col // n_cols
+    square_row = row // n_rows
+    square_start_col = square_col * n_cols
+    square_start_row = square_row * n_rows
+    used_nums |= set(grid[i][j] for i in range(square_start_row, square_start_row + n_rows) for j in range(square_start_col, square_start_col + n_cols))
+    return set(range(1, n+1)) - used_nums
+
+def recursive_solve(grid, n_rows, n_cols):
+    '''
+	This function uses recursion to exhaustively search all possible solutions to a grid
+	until the solution is found
+
+	args: grid, n_rows, n_cols
+	return: A solved grid (as a nested list), or None
+	'''
+    n = n_rows * n_cols
+    empty_cell = find_empty(grid)
+    if not empty_cell:
+        return grid
+    row, col = empty_cell
+    potential_values = get_potential_values(grid, row, col, n_rows, n_cols)
+    if not potential_values:
+        return None
+    for val in sorted(potential_values, key=lambda x: len(get_potential_values(grid, row, col, n_rows, n_cols))):
+        grid[row][col] = val
+        result = recursive_solve(grid, n_rows, n_cols)
+        if result is not None:
+            return result
+        grid[row][col] = 0
+    return None
+
+def check_solution(grid, n_rows, n_cols):
+    '''
+	This function is used to check whether a sudoku board has been correctly solved
+
+	args: grid - representation of a suduko board as a nested list.
+	returns: True (correct solution) or False (incorrect solution)
+	'''
+    n = n_rows * n_cols
+    rows = grid
+    columns = [[grid[i][j] for i in range(n)] for j in range(n)]
+    squares = get_squares(grid, n_rows, n_cols)
+    for section in rows + columns + squares:
+        if not check_section(section, n):
+            return False
+    return True
+
+def random_solve(grid, n_rows, n_cols, max_tries=50000):
+	'''
+	This function uses random trial and error to solve a Sudoku grid
+
+	args: grid, n_rows, n_cols, max_tries
+	return: A solved grid (as a nested list), or the original grid if no solution is found
+	'''
+
+	for i in range(max_tries):
+		possible_solution = fill_board_randomly(grid, n_rows, n_cols)
+		if check_solution(possible_solution, n_rows, n_cols):
+			return possible_solution
+
+	return grid
+
+def fill_board_randomly(grid, n_rows, n_cols):
+	'''
+	This function will fill an unsolved Sudoku grid with random numbers
+
+	args: grid, n_rows, n_cols
+	return: A grid with all empty values filled in
+	'''
+	n = n_rows*n_cols
+	#Make a copy of the original grid
+	filled_grid = copy.deepcopy(grid)
+
+	#Loop through the rows
+	for i in range(len(grid)):
+		#Loop through the columns
+		for j in range(len(grid[0])):
+			#If we find a zero, fill it in with a random integer
+			if grid[i][j] == 0:
+				filled_grid[i][j] = random.randint(1, n)
+
+	return filled_grid 
+
+
+
+def solve(grid, n_rows, n_cols):
+    '''
+    To use random solver, comment out everythin but the random solve function.
+    To use the recursive solver, comment out everything but the recursive solve function.
+    To use the wave propagation solver, comment out everything but the wave propagation call and the return line.
+    '''
+    #done =  wp_solve_sudoku(grid)
+    #return grid
+    #return random_solve(grid, n_rows, n_cols)
+    return recursive_solve(grid, n_rows, n_cols)
+
+
+
+
+
+def hint(puzzle, num_hints):
+    """
+    Given a Sudoku puzzle as a nested list and the desired number of hints "num_hints",
+    returns the puzzle with the designated number of hints filled in.
+    """
+    num_hints = int(num_hints)
+    hints = []
+    size = len(puzzle)
+    while len(hints) < num_hints:
+        # Loop through each cell in the puzzle
+        for i in range(size):
+            for j in range(size):
+                # If the cell is empty (0), try filling it in with each possible value
+                if puzzle[i][j] == 0:
+                    for value in range(1, size + 1):
+                        # Check if filling in this value would be valid
+                        if is_valid_move(puzzle, i, j, value):
+                            # If so, add the hint to the list
+                            hints.append((i, j, value))
+                            # Update the puzzle with the new value
+                            puzzle[i][j] = value
+                            break
+                if len(hints) >= num_hints:
+                    break
+            if len(hints) >= num_hints:
+                break
+    return puzzle
+
+def is_valid_move(puzzle, row, col, value):
+    """
+    Given a Sudoku `puzzle` as a nested list, checks if filling in
+    the cell at (`row`, `col`) with `value` would be a valid move.
+    """
+    size = len(puzzle)
+    # Check if `value` already exists in the same row
+    if value in puzzle[row]:
+        return False
+    # Check if `value` already exists in the same column
+    if value in [puzzle[i][col] for i in range(size)]:
+        return False
+    # Check if `value` already exists in the same square
+    square_size = int(size ** 0.5)
+    square_row = (row // square_size) * square_size
+    square_col = (col // square_size) * square_size
+    square_values = [puzzle[i][j] for i in range(square_row, square_row + square_size)
+                     for j in range(square_col, square_col + square_size)]
+    if value in square_values:
+        return False
+    # If all checks pass, the move is valid
+    return True
+    
+
+
+def profile():
+    '''
+    Measures the performance of the recursive solver in seconds for grids of different sizes.
+    The function should output plots showing the average solve time for grids of different sizes.
+    '''
+    #Creates empty lists for all three grid difficulties
+    easy_times = []
+    med_times = []
+    hard_times = []
+
+    #Cycles through each grid
+    for (i, (grid, n_rows, n_cols)) in enumerate(grids):
+        start_time = time.time()
+        recursive_solve(grid, n_rows, n_cols)
+        end_time = time.time()
+        #Finds the time it takes to solve grid.
+        solve_time = end_time-start_time
+        #Adds solve time of the grid to the list corresponding to grid difficulty
+        if n_rows == 3 and n_cols == 3:
+             hard_times.append(solve_time)
+        elif n_rows == 2 and n_cols == 2:
+             easy_times.append(solve_time)
+        else:
+             med_times.append(solve_time)
+
+    
+    #Plots easy grid solve time.
+    plt.bar(range(len(easy_times)), easy_times)
+    plt.xlabel('Grid number')
+    plt.ylabel('Time to solve(s)')
+    plt.title('Easy grid solve time')
+    plt.ylim(0, 0.00000000000000000001)
+    plt.grid(color='#95a5a6', linestyle='--', linewidth=2, axis='y', alpha=0.7)
+    plt.show()
+
+    #Plots medium grid solve time.
+    plt.bar(range(len(med_times)), med_times)
+    plt.xlabel('Grid number')
+    plt.ylabel('Time to solve(s)')
+    plt.title('Medium grid solve time')
+    plt.ylim(0, 0.0000001)
+    plt.grid(color='#95a5a6', linestyle='--', linewidth=2, axis='y', alpha=0.7)
+    plt.show()
+    print(len(med_times))
+
+    #Plots hard grid solve time.
+    plt.bar(range(len(hard_times)), hard_times)
+    plt.xlabel('Grid number')
+    plt.ylabel('Time to solve(s)')
+    plt.title('Hard grid solve time')
+    plt.grid(color='#95a5a6', linestyle='--', linewidth=2, axis='y', alpha=0.7)
+    plt.show()
+
+
+def wp_solve_sudoku(board: List[List[int]]) -> bool:
+    n = len(board)  # Size of the Sudoku
+    m = int(n ** 0.5)  # Size of each small square in the Sudoku
+    # Initialize all possible numbers
+    possible = [[set(range(1, n + 1)) for _ in range(n)] for _ in range(n)]
+
+    # Update possible values for cell (i, j)
+    def update_possible(i: int, j: int, k: int) -> bool:
+        conflict = False
+        possible[i][j] = set([k])
+        # Update other cells in the same row and column
+        for x in range(n):
+            if k in possible[i][x]:
+                possible[i][x].remove(k)
+                if len(possible[i][x]) == 0:
+                    conflict = True
+            if k in possible[x][j]:
+                possible[x][j].remove(k)
+                if len(possible[x][j]) == 0:
+                    conflict = True
+        # Update other cells in the same small square
+        si, sj = m * (i // m), m * (j // m)
+        for x in range(si, si + m):
+            for y in range(sj, sj + m):
+                if k in possible[x][y]:
+                    possible[x][y].remove(k)
+                    if len(possible[x][y]) == 0:
+                        conflict = True
+        return conflict
+
+    # Wavefront propagation algorithm
+    def wavefront_propagation() -> bool:
+        while True:
+            progress = False
+            # Traverse each cell, find determined values and update
+            for i in range(n):
+                for j in range(n):
+                    if board[i][j] == 0 and len(possible[i][j]) == 1:
+                        k = possible[i][j].pop()
+                        board[i][j] = k
+                        update_possible(i, j, k)
+                        progress = True
+
+            # If there is no progress, break the loop
+            if not progress:
+                break
+
+        # If all cells have values, return True
+        if all(board[i][j] != 0 for i in range(n) for j in range(n)):
+            return True
+
+        # Find the cell with the fewest optional values
+        min_possible = float('inf')
+        next_cell = None
+        for i in range(n):
+            for j in range(n):
+                if board[i][j] == 0:
+                    num_possible = len(possible[i][j])
+                    if num_possible < min_possible:
+                        min_possible = num_possible
+                        next_cell = (i, j)
+
+        # If not found, return False
+        if next_cell is None:
+            return False
+
+        # Traverse all possible values and try
+        i, j = next_cell
+        for k in random.sample(possible[i][j], len(possible[i][j])):
+            if not update_possible(i, j, k):
+                board[i][j] = k
+                if wavefront_propagation():
+                    return True
+                board[i][j] = 0
+            possible[i][j].add(k)
+
+        return False
+
+    # Update possible values based on initial board state
+    for i in range(n):
+        for j in range(n):
+            if board[i][j] != 0:
+                update_possible(i, j, board[i][j])
+
+    return wavefront_propagation()
+
+    
+def main(args):
+    points = 0
+    mode = args[0]
+    if mode == "--profile":
+        profile()
+    elif mode == "--hint":
+        n_val = args[1]
+        hinted_grid = hint(grid2, n_val)
+        #Change the first variable here to use different grids.
+        print(hinted_grid)
+
+    elif mode == 'input output':
+         print('alper aksen')
+
+    elif mode == 'explain':
+         print('alper aksen')
+
+    
+    print("Running test script for coursework 3")
+    print("====================================")
+    for (i, (grid, n_rows, n_cols)) in enumerate(grids):
+        print("Solving grid: %d" % (i+1))
+        start_time = time.time()
+        solution = solve(grid, n_rows, n_cols)
+        elapsed_time = time.time() - start_time
+        print("Solved in: %f seconds" % elapsed_time)
+        print(solution)
+        if check_solution(solution, n_rows, n_cols):
+            print("grid %d correct" % (i+1))
+            points = points + 10
+        else:
+             print("grid %d incorrect" % (i+1))
+
+    print("====================================")
+    print("Test script complete, Total points: %d" % points)
+
+
+if __name__ == "__main__":
+	main(sys.argv[1:])
