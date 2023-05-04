@@ -37,6 +37,12 @@ Task 2 - by Alper, Cameron
         python alper_flags.py -explain -file abc.txt cba.txt
         python alper_flags.py -file abc.txt cba.txt -explain
         
+# coursework 2 parts by Cameron
+To run the profile flag, type into terminal: ./coursework_cam_task2.py --profile. 
+You can change the grids that the flag works for by going into the code, and changing/adding to the grids.
+
+To run the hint flag, type into the terminal./coursework_3_cam_task2.py --hint N 
+N can be any number of hints. To change the grid the hint is for, you can change the grid passed into the function in the function titled 'main'.
 
 #task 3 by Zili
 Introduction
@@ -59,9 +65,4 @@ The wavefront propagation process is then initiated. During each iteration, the 
 
 This process repeats until no progress can be made. If all cells have been filled, the function returns True. Otherwise, it finds an empty cell with the fewest possible values and iteratively fills it with each of its possible values. If the Sudoku can be solved with one of these values, the function returns True. If no solution is found, the function backtracks and returns False.
 
-# crousework 3 all parts by Cameron
-To run the profile flag, type into terminal: ./coursework_3_all_parts.py --profile. 
-You can change the grids that the flag works for by going into the code, and changing/adding to the grids.
 
-To run the hint flag, type into the terminal./coursework_3_all_parts.py --hint N 
-N can be any number of hints. To change the grid the hint is for, you can change the grid passed into the function in the function titled 'main'.
